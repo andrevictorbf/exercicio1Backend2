@@ -1,15 +1,20 @@
 package com.aula.biblioteca.model;
 
+import java.util.List;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import com.aula.biblioteca.dto.LivroDto;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +31,12 @@ public class Livro {
     private Integer qtdePaginas;
     private Float nota;
 
-    public static Livro fromDto(LivroDto livroDto){
-        return new Livro(null, livroDto.titulo(), livroDto.descricao(), livroDto.qtdePaginas(), livroDto.nota());
+    @JsonIgnore
+    @DBRef
+    private List<Autor> autores;
+
+    public static Livro fromDto(LivroDto livroDto) {
+        return new Livro(null, livroDto.titulo(), livroDto.descricao(),
+                livroDto.qtdePaginas(), livroDto.nota(), livroDto.autores());
     }
 }
